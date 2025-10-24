@@ -19,17 +19,25 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
+    # 👇 Only log in to Docker Hub for non-pull-request events
     - name: Log in to Docker Hub
+      if: github.event_name != 'pull_request'
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
+    # 👇 Skip message for PRs
+    - name: Skip Docker login on pull requests
+      if: github.event_name == 'pull_request'
+      run: echo "Skipping Docker login — secrets are unavailable in PRs."
+
+    # 👇 Build and push Docker image
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
         context: .
-        push: true
+        push: ${{ github.event_name != 'pull_request' }}
         tags: aryansharma04/systemmonitoring:latest
 
     - name: Clean up images
