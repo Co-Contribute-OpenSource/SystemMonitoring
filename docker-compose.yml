@@ -1,52 +1,45 @@
-version: "3.8"
+version: "3.9"
 
 services:
-  app:
+  # FastAPI App
+  fastapi:
     build: .
-    restart: unless-stopped
-    container_name: reco-app
+    container_name: systemmonitoring_app
     ports:
-      - 8000:8000
-    networks:
-      example-network:
-        ipv4_address: 172.16.238.10
-
-  prometheus:
-    image: prom/prometheus:latest
-    restart: unless-stopped
-    container_name: prometheus
-    ports:
-      - 9090:9090
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
-    networks:
-      example-network:
-        ipv4_address: 172.16.238.11
-
-  grafana:
-    image: grafana/grafana:latest
-    restart: unless-stopped
-    user: "472"
-    container_name: grafana
+      - "8000:8000"
     depends_on:
       - prometheus
-    ports:
-      - 3000:3000
-    volumes:
-      - ./provisioning/:/etc/grafana/provisioning/
-    env_file:
-      - ./config.monitoring
     networks:
-      example-network:
-        ipv4_address: 172.16.238.12
+      - monitoring
+
+  # Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring
+
+  # Grafana
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-clock-panel
+    volumes:
+      - ./provisioning:/etc/grafana/provisioning:ro
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - monitoring
 
 networks:
-  example-network:
-    name: example-network
+  monitoring:
     driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.16.238.0/24

@@ -92,3 +92,9 @@ https://hub.docker.com/r/aryansharma04/systemmonitoring
   <img src="assets/grafana-2.png"  width="800">
 
 </p>
+## 🚀 Running the SystemMonitoring Stack with Docker
+
+### Build and Start
+```bash
+docker-compose up --build
+
