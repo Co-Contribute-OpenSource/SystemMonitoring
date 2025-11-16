@@ -1,8 +1,8 @@
-FROM python:3.11-slim
+# ---------- Stage 1: Build dependencies ----------
+FROM python:3.11-slim AS builder
 
 WORKDIR /app
 
-# Install minimal system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libopenblas-dev \
@@ -13,8 +13,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY req.txt .
 
 RUN pip install --upgrade pip \
-    && pip install --no-cache-dir -r req.txt
+    && pip install --no-cache-dir -r req.txt \
+    && pip install --no-cache-dir uvicorn
 
+# ---------- Stage 2: Final lightweight image ----------
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Copy only installed packages (fast!)
+COPY --from=builder /usr/local /usr/local
+
+# Copy app code
 COPY . .
 
 EXPOSE 8000
