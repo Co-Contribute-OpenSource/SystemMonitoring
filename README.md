@@ -1,100 +1,191 @@
-# SystemMonitoring
-FastAPI-based project integrating Prometheus and Grafana for monitoring and enhanced with AI-driven recommendation capabilities.
+#  SystemMonitoring
 
-# FastAPI + promethues + Grafana :
+A **FastAPI-based system monitoring platform** that integrates **Prometheus** and **Grafana** to collect, visualize, and analyze metrics, enhanced with **AI-driven recommendation logic** using machine learning.
 
-<p style="text-align:center">
-<img src="https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png" width="200" > 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Prometheus_software_logo.svg/1200px-Prometheus_software_logo.svg.png" width="100">
-<!-- <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a1/Grafana_logo.svg/1200px-Grafana_logo.svg.png" width="100" > -->
-<img src="https://devnot.com/wp-content/uploads/2017/09/docker-compose.jpg" width="200" >
+This project demonstrates a **real-world monitoring stack** commonly used in production systems.
 
-</p>
-<br>
+---
 
+##  Tech Stack
 
-## Installation
+- **FastAPI** – Backend API and metrics exposure
+- **Prometheus** – Metrics scraping and storage
+- **Grafana** – Metrics visualization and dashboards
+- **Docker & Docker Compose** – Containerized deployment
+- **scikit-learn & pandas** – AI-based recommendation logic
 
-There are only two prerequisites Docker and Docker-compose: 
+---
 
-* [Docker](https://docs.docker.com/get-docker/)
-* [Docker-compose](https://docs.docker.com/compose/install/)
+##  Architecture Overview
 
-<br>
+```
 
-``` bash
+FastAPI Application
+└── /metrics endpoint
+└── Prometheus scrapes metrics
+└── Grafana visualizes metrics
+
+````
+
+---
+
+##  Prerequisites
+
+Make sure the following are installed on your system:
+
+- **Docker**
+- **Docker Compose (v2)**
+
+Check installation:
+```bash
+docker --version
+docker compose version
+````
+
+---
+
+##  Installation
+
+Clone the repository:
+
+```bash
 git clone https://github.com/AryanSharma9917/SystemMonitoring.git
+cd SystemMonitoring
 ```
 
-## Usage
+---
 
-### Start 
+##  Running the Project
 
-``` bash
-docker-compose up -d
+### Build and Start the Stack
+
+```bash
+docker compose up --build -d
 ```
 
-If you make any changes you can add `--build`. 
+### Stop the Stack
 
-``` bash
-docker-compose up --build -d
-``` 
-
-### Stopping containers
-
-``` bash
-docker-compose down
+```bash
+docker compose down
 ```
 
-### Container Logs
-When running containers with detached mode (`-d`) they work in the background thus you can't see the flowing logs. If you want to check compose logs with cli you can use `logs`.
+### View Logs
 
-``` bash
-docker-compose logs --tail 50
+```bash
+docker compose logs --tail 50
 ```
 
-* FastAPI: http://localhost:8000
-* Prometheus: http://localhost:9090
-* Grafana: http://localhost:3000
+---
 
+##  Service Endpoints
 
-# Changelogs
-* Docker Image (Python to Python Slim)
-* `requirements.txt`
-    * scikit-learn & pandas
-* `docker-compose.yaml`
-    * Changed folder structure for Grafana provisioning
-    * Change dashboard metrics & graphs
-* Added data folder and `data_create.py`
-* Added a touch of AI
-    * Created user similarity and item similarity matrices
+| Service      | URL                                                            |
+| ------------ | -------------------------------------------------------------- |
+| FastAPI API  | [http://localhost:8000](http://localhost:8000)                 |
+| FastAPI Docs | [http://localhost:8000/docs](http://localhost:8000/docs)       |
+| Metrics      | [http://localhost:8000/metrics](http://localhost:8000/metrics) |
+| Prometheus   | [http://localhost:9090](http://localhost:9090)                 |
+| Grafana      | [http://localhost:3000](http://localhost:3000)                 |
 
-<br>
+### Grafana Login
 
-Docker Image
-``` bash
+* **Username:** `admin`
+* **Password:** `admin`
+
+---
+
+## Features
+
+* Real-time metrics collection via Prometheus
+* Interactive Grafana dashboards
+* FastAPI endpoints for system monitoring
+* AI-powered recommendation logic using similarity matrices
+* Fully containerized setup using Docker Compose
+
+---
+
+##  AI Component
+
+The project includes a basic **recommendation engine**:
+
+* User similarity matrix
+* Item similarity matrix
+* Built using `pandas` and `scikit-learn`
+
+This demonstrates how **ML logic can coexist with monitoring systems**.
+
+---
+
+##  Project Structure
+
+```
+SystemMonitoring/
+├── assets/                 
+├── provisioning/           # Grafana dashboards & datasources
+├── data/                   # Sample data
+├── tests/                  # Unit & integration tests
+├── Dockerfile
+├── docker-compose.yml
+├── prometheus.yml
+├── req.txt
+└── apps.py
+```
+
+---
+
+## 🐳 Docker Image
+
+Available on Docker Hub:
+
+```
 https://hub.docker.com/r/aryansharma04/systemmonitoring
 ```
 
-<br>
+---
 
-# Screenshots :
-## API
-<p align="center">
-  <img src="assets/api-response-item.png"  width="800">
-  <img src="assets/api-response-user.png" width="800">
-  <img src="assets/fastapidocs.png" width="800">
-</p>
+##  Screenshots
 
-## Grafana
-<p align="center">
-  <img src="assets/grafana-1.png"  width="800">
-  <img src="assets/grafana-2.png"  width="800">
+### FastAPI
 
-</p>
-## 🚀 Running the SystemMonitoring Stack with Docker
+![API Response](assets/api-response-item.png)
+![API Response](assets/api-response-user.png)
+![FastAPI Docs](assets/fastapidocs.png)
 
-### Build and Start
-```bash
-docker-compose up --build
+### Grafana Dashboards
+
+![Grafana Dashboard](assets/grafana-1.png)
+![Grafana Dashboard](assets/grafana-2.png)
+
+---
+
+##  Changelog Highlights
+
+* Migrated to **Python slim Docker image**
+* Added **Docker Compose support**
+* Improved **Grafana dashboards**
+* Added **AI-based recommendation logic**
+* Introduced **unit and integration tests**
+
+---
+
+##  Use Cases
+
+* Learning system monitoring with Prometheus & Grafana
+* Demonstrating containerized microservices
+* Showcasing DevOps + Backend + ML integration
+* Portfolio-ready DevOps project
+
+---
+
+##  License
+
+This project is open-source and available under the MIT License.
+
+---
+
+##  Author
+
+**Aryan Sharma**
+GitHub: [https://github.com/AryanSharma9917](https://github.com/AryanSharma9917)
+
 
